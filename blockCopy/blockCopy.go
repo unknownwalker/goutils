@@ -1,4 +1,4 @@
-package utils
+package blockCopy
 
 import "errors"
 
