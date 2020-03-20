@@ -2,7 +2,7 @@ package blockCopy
 
 import "errors"
 
-func blockCopy(src []byte, srcOffset int, dst []byte, dstOffset, count int) (bool, error) {
+func BlockCopy(src []byte, srcOffset int, dst []byte, dstOffset, count int) (bool, error) {
 	srcLen := len(src)
 	if srcOffset > srcLen || count > srcLen || srcOffset+count > srcLen {
 		return false, errors.New("源缓冲区 索引超出范围")
