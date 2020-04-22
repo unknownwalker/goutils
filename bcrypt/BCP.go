@@ -1,4 +1,4 @@
-package BCP
+package utils
 
 import (
 	"bytes"
