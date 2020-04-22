@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/md5"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
 	"io"
 )
@@ -113,4 +115,10 @@ func Dncrypt(rawData string, key []byte) (string, error) {
 		return "", err
 	}
 	return string(dnData), nil
+}
+
+func md5V(str string) string {
+	h := md5.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
 }
