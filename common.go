@@ -65,3 +65,12 @@ func GetCPUID() string {
 	}
 	return ""
 }
+
+func GetSYSUUID() string {
+	checkStatement := fmt.Sprintf("dmidecode -s system-uuid ")
+	output, _ := exec.Command("sh", "-c", checkStatement).CombinedOutput()
+	if len(output) > 0 {
+		return string(output)
+	}
+	return ""
+}
