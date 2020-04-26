@@ -67,7 +67,7 @@ func GetCPUID() string {
 }
 
 func GetSYSUUID() string {
-	checkStatement := fmt.Sprintf("dmidecode -s system-uuid ")
+	checkStatement := fmt.Sprintf("dmidecode -t system | grep UUID ")
 	output, _ := exec.Command("sh", "-c", checkStatement).CombinedOutput()
 	if len(output) > 0 {
 		return string(output)
