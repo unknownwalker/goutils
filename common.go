@@ -94,3 +94,8 @@ func BytesToInt(b []byte) int {
 
 	return int(x)
 }
+
+func FileExist(path string) bool {
+	_, err := os.Lstat(path)
+	return !os.IsNotExist(err)
+}
