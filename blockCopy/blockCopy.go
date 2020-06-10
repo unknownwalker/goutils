@@ -20,10 +20,9 @@ func BlockCopy(src []byte, srcOffset int, dst []byte, dstOffset, count int) (boo
 	}
 	return true, nil
 }
-
 func BlockReplace(src []byte) (bool, error, []byte) {
 	srcLen := len(src)
-	tmp := make([]byte, srcLen)
+	tmp := src
 
 	for i := 0; i < srcLen; i++ {
 		if (i + 3) < srcLen {
@@ -44,7 +43,7 @@ func BlockReplace(src []byte) (bool, error, []byte) {
 
 func BABlockReplace(src []byte) (bool, error, []byte) {
 	srcLen := len(src)
-	tmp := make([]byte, srcLen)
+	tmp := src
 
 	for i := 0; i < srcLen; i++ {
 		if (i + 13) < srcLen {
@@ -57,8 +56,28 @@ func BABlockReplace(src []byte) (bool, error, []byte) {
 				src = tmp
 				srcLen = len(tmp)
 				i = i - 1
+
 			}
 		}
 	}
-	return true, nil, tmp
+
+	srcLen = len(tmp)
+	batmp := tmp
+
+	for i := 0; i < srcLen; i++ {
+		if (i + 3) < srcLen {
+			if tmp[i] == 0x00 && tmp[i+1] == 0x00 && tmp[i+2] == 0x01 && tmp[i+3] == 0xe0 && srcLen >= 9 {
+				a := int(tmp[i+8])
+
+				batmp = make([]byte, srcLen-8-a-1)
+				copy(batmp, tmp[0:i])
+				BlockCopy(tmp, i+8+a+1, batmp, i, srcLen-i-8-a-1)
+				tmp = batmp
+				srcLen = len(batmp)
+				i = i - 1
+			}
+		}
+	}
+
+	return true, nil, batmp
 }
