@@ -51,9 +51,9 @@ func BABlockReplace(src []byte) (bool, error, []byte) {
 			if src[i] == 0x00 && src[i+1] == 0x00 && src[i+2] == 0x01 && src[i+3] == 0xba && srcLen >= 9 {
 				Packstuff := int(src[i+13])
 				a := int(Packstuff & 0x7)
-				tmp = make([]byte, srcLen-9-a-1)
+				tmp = make([]byte, srcLen-13-a-1)
 				copy(tmp, src[0:i])
-				BlockCopy(src, i+9+a+1, tmp, i, srcLen-i-9-a-1)
+				BlockCopy(src, i+13+a+1, tmp, i, srcLen-i-13-a-1)
 				src = tmp
 				srcLen = len(tmp)
 				i = i - 1
