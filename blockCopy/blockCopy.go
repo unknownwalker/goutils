@@ -41,3 +41,24 @@ func BlockReplace(src []byte) (bool, error, []byte) {
 	}
 	return true, nil, tmp
 }
+
+func BABlockReplace(src []byte) (bool, error, []byte) {
+	srcLen := len(src)
+	tmp := make([]byte, srcLen)
+
+	for i := 0; i < srcLen; i++ {
+		if (i + 13) < srcLen {
+			if src[i] == 0x00 && src[i+1] == 0x00 && src[i+2] == 0x01 && src[i+3] == 0xba && srcLen >= 9 {
+				Packstuff := int(src[i+13])
+				a := int(Packstuff & 0x7)
+				tmp = make([]byte, srcLen-9-a-1)
+				copy(tmp, src[0:i])
+				BlockCopy(src, i+9+a+1, tmp, i, srcLen-i-9-a-1)
+				src = tmp
+				srcLen = len(tmp)
+				i = i - 1
+			}
+		}
+	}
+	return true, nil, tmp
+}
