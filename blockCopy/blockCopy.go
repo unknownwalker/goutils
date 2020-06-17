@@ -78,6 +78,6 @@ func BABlockReplace(src []byte) (bool, error, []byte) {
 			}
 		}
 	}
-
+	//
 	return true, nil, batmp
 }
