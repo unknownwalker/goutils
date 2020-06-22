@@ -20,11 +20,11 @@ func BlockCopy(src []byte, srcOffset int, dst []byte, dstOffset, count int) (boo
 	}
 	return true, nil
 }
-func BlockReplace(src []byte) (bool, error, []byte) {
+func BlockReplace(src []byte, count int) (bool, error, []byte) {
 	srcLen := len(src)
 	tmp := src
 
-	for i := 0; i < srcLen; i++ {
+	for i := 0; i < srcLen && i < count; i++ {
 		if (i + 3) < srcLen {
 			if src[i] == 0x00 && src[i+1] == 0x00 && src[i+2] == 0x01 && src[i+3] == 0xe0 && srcLen >= 9 {
 				a := int(src[i+8])
