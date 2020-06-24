@@ -95,6 +95,31 @@ func BytesToInt(b []byte) int {
 	return int(x)
 }
 
+//字节数(大端)组转成int(无符号的)
+func BytesToIntU(b []byte) int {
+	if len(b) == 3 {
+		b = append([]byte{0}, b...)
+	}
+	bytesBuffer := bytes.NewBuffer(b)
+	switch len(b) {
+	case 1:
+		var tmp uint8
+		binary.Read(bytesBuffer, binary.BigEndian, &tmp)
+
+		return int(tmp)
+	case 2:
+		var tmp uint16
+		binary.Read(bytesBuffer, binary.BigEndian, &tmp)
+		return int(tmp)
+	case 4:
+		var tmp uint32
+		binary.Read(bytesBuffer, binary.BigEndian, &tmp)
+		return int(tmp)
+	default:
+		return 0
+	}
+}
+
 func FileExist(path string) bool {
 	_, err := os.Lstat(path)
 	return !os.IsNotExist(err)
